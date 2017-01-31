@@ -1,0 +1,10 @@
+services:
+    ffvv_gesasso_api.serializer.bad_request_exception_hanlder:
+        class: Emhar\ApiInfrastructureBundle\Serializer\BadRequestHttpExceptionHandler
+        tags:
+            - { name: jms_serializer.subscribing_handler }
+    ffvv_gesasso_api.serializer.date_handler:
+        class: Emhar\ApiInfrastructureBundle\Serializer\DateHandler
+        arguments: ["@translator"]
+        tags:
+            - { name: jms_serializer.subscribing_handler }
