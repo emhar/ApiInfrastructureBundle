@@ -24,6 +24,6 @@
     }
   },
   "autoload": {
-    "psr-0": { "Emhar\\ApiInfrastructureBundle": "" }
+    "psr-4": { "Emhar\\ApiInfrastructureBundle\\": "" }
   }
 }
