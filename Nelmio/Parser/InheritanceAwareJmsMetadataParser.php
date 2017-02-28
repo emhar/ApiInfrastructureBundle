@@ -11,6 +11,8 @@ use JMS\Serializer\Metadata\Driver\DoctrineTypeDriver;
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use JMS\Serializer\SerializationContext;
+use Metadata\ClassHierarchyMetadata;
+use Metadata\MergeableClassMetadata;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Parser\JmsMetadataParser;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
@@ -33,6 +35,21 @@ class InheritanceAwareJmsMetadataParser extends JmsMetadataParser
      * @var PropertyNamingStrategyInterface
      */
     private $pnamingStrategy;
+
+    /**
+     * @var DoctrineClassMetadata[]
+     */
+    protected $doctrineCache;
+
+    /**
+     * @var ClassHierarchyMetadata[]|MergeableClassMetadata[]
+     */
+    protected $jmsMetaDataCache;
+
+    /**
+     * @var array
+     */
+    protected $parseCache;
 
     /**
      * Constructor, requires JMS Metadata factory
@@ -88,11 +105,15 @@ class InheritanceAwareJmsMetadataParser extends JmsMetadataParser
         }, $reflection->getDefaultProperties());
 
         // iterate over property metadata
+        if (!isset($this->doctrineCache[$className])) {
+            $this->doctrineCache[$className] = $this->tryLoadingDoctrineMetadata($className);
+        }
+        $doctrineMeta = $this->doctrineCache[$className];
         foreach ($meta->propertyMetadata as $item) {
             //////////////////////////////////////////////////////
             //                  START OVERRIDE                  //
             //////////////////////////////////////////////////////
-            if (is_null($item->type) && $doctrineMeta = $this->tryLoadingDoctrineMetadata($className)) {
+            if (is_null($item->type) && $doctrineMeta) {
                 $this->setPropertyType($doctrineMeta, $item);
             }
             //////////////////////////////////////////////////////
@@ -153,11 +174,19 @@ class InheritanceAwareJmsMetadataParser extends JmsMetadataParser
                 //////////////////////////////////////////////////////
                 //                  START OVERRIDE                  //
                 //////////////////////////////////////////////////////
-                $metadata = $this->pfactory->getMetadataForClass($dataType['class']);
+                if (!isset($this->jmsMetaDataCache[$dataType['class']])) {
+                    $this->jmsMetaDataCache[$dataType['class']] = $this->pfactory->getMetadataForClass($dataType['class']);
+                }
+                $metadata = $this->jmsMetaDataCache[$dataType['class']];
                 /* @var $metadata ClassMetadata */
                 $descriptionPrefix = 'Only for "' . $metadata->discriminatorFieldName . '" in ';
                 foreach ($metadata->discriminatorMap as $discriminatorValue => $class) {
-                    $children = $this->doParse($class, $visited, $groups);
+                    $cacheKey =$class.implode('.', $groups) ;
+                    if (!isset($this->parseCache[$cacheKey])) {
+                        $visited[] = $class;
+                        $this->parseCache[$cacheKey] = $this->doParse($class, $visited, $groups);
+                    }
+                    $children = $this->parseCache[$cacheKey];
                     //merge description
                     foreach ($children as $subName => $parameter) {
                         $initialDescription = null;
