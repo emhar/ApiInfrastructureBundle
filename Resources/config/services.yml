@@ -1,10 +1,15 @@
 services:
-    ffvv_gesasso_api.serializer.bad_request_exception_hanlder:
+    emhar_api_infrastructure.serializer.bad_request_exception_hanlder:
         class: Emhar\ApiInfrastructureBundle\Serializer\BadRequestHttpExceptionHandler
         tags:
             - { name: jms_serializer.subscribing_handler }
-    ffvv_gesasso_api.serializer.date_handler:
+    emhar_api_infrastructure.serializer.date_handler:
         class: Emhar\ApiInfrastructureBundle\Serializer\DateHandler
         arguments: ["@translator"]
         tags:
             - { name: jms_serializer.subscribing_handler }
+    emhar_api_infrastructure.nelmio.cache_warmer:
+        class: Emhar\ApiInfrastructureBundle\Nelmio\Cache\NelmioDocCacheWarmer
+        arguments: ["@kernel", "%emhar_api_infrastructure.warm_nelmio_doc%"]
+        tags:
+            - { name: kernel.cache_warmer }
