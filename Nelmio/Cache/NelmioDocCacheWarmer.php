@@ -50,15 +50,17 @@ class NelmioDocCacheWarmer implements CacheWarmerInterface
      */
     public function warmUp($cacheDir)
     {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
+        if ($this->warnNelmioDoc) {
+            $application = new Application($this->kernel);
+            $application->setAutoExit(false);
 
-        $input = new ArrayInput(array(
-            'command' => 'api:doc:dump',
-            '--format' => 'html',
-        ));
-        // You can use NullOutput() if you don't need the output
-        $output = new NullOutput();
-        $application->run($input, $output);
+            $input = new ArrayInput(array(
+                'command' => 'api:doc:dump',
+                '--format' => 'html',
+            ));
+            // You can use NullOutput() if you don't need the output
+            $output = new NullOutput();
+            $application->run($input, $output);
+        }
     }
 }
