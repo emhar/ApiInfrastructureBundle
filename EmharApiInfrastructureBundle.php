@@ -19,7 +19,6 @@ class EmharApiInfrastructureBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new OverrideNelmioParser());
-        $container->addCompilerPass(new OverrideEnumHandlerPass());
         $container->addCompilerPass(new OverrideFosRestRequestBodyParamConverter());
     }
 }
