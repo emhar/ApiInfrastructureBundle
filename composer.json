@@ -15,7 +15,7 @@
     "php": ">=7.0",
     "fervo/enum-bundle": "^2.0",
     "nelmio/api-doc-bundle": "^2.13",
-    "friendsofsymfony/rest-bundle": "^2.1",
+    "friendsofsymfony/rest-bundle": "2.1.*|2.2.*",
     "jms/serializer-bundle": "^1.1"
   },
   "extra": {
