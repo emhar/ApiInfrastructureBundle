@@ -13,3 +13,8 @@ services:
         arguments: ["@kernel", "%emhar_api_infrastructure.warm_nelmio_doc%"]
         tags:
             - { name: kernel.cache_warmer }
+    emhar_api_infrastructure.nelmio.cache_warmer_with_jms_job:
+        class: Emhar\ApiInfrastructureBundle\Nelmio\Cache\NelmioDocCacheWarmerWithJmsJob
+        arguments: ["@doctrine", "%emhar_api_infrastructure.warm_nelmio_doc_with_jms_job%"]
+        tags:
+            - { name: kernel.cache_warmer }

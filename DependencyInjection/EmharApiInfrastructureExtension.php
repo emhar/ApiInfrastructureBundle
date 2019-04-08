@@ -21,6 +21,7 @@ class EmharApiInfrastructureExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('emhar_api_infrastructure.warm_nelmio_doc', $config['warm_nelmio_doc']);
+        $container->setParameter('emhar_api_infrastructure.warm_nelmio_doc_with_jms_job', $config['warm_nelmio_doc_with_jms_job']);
 
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

@@ -19,7 +19,8 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('emhar_api_infrastructure')
             ->children()
-            ->scalarNode('warm_nelmio_doc')->defaultTrue()->end()
+            ->scalarNode('warm_nelmio_doc')->defaultFalse()->end()
+            ->scalarNode('warm_nelmio_doc_with_jms_job')->defaultFalse()->end()
             ->end()
             ->end();
         return $treeBuilder;
