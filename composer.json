@@ -15,8 +15,11 @@
     "php": ">=7.0",
     "fervo/enum-bundle": "^2.0",
     "nelmio/api-doc-bundle": "^2.13",
-    "friendsofsymfony/rest-bundle": "2.1.*|2.2.*",
-    "jms/serializer-bundle": "^1.1"
+    "friendsofsymfony/rest-bundle": ">=2.1",
+    "jms/serializer-bundle": "^2.1",
+    "symfony/config": "^3.1|^4.0",
+    "symfony/dependency-injection": "^3.1|^4.0",
+    "symfony/http-kernel": "^3.1|^4.0"
   },
   "extra": {
     "branch-alias": {
