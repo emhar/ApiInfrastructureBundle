@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": ">=7.0",
-    "fervo/enum-bundle": "^2.0",
+    "fervo/enum-bundle": "^2.0|^3.0",
     "nelmio/api-doc-bundle": "^2.13",
     "friendsofsymfony/rest-bundle": ">=2.1",
     "jms/serializer-bundle": "^2.1",
