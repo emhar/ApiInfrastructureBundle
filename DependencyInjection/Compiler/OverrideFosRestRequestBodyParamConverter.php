@@ -17,7 +17,10 @@ class OverrideFosRestRequestBodyParamConverter implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('fos_rest.converter.request_body');
-        $definition->setClass(RequestBodyParamConverter::class);
+        
+        if ($container->hasDefinition('fos_rest.converter.request_body')) {
+            $definition = $container->getDefinition('fos_rest.converter.request_body');
+            $definition->setClass(RequestBodyParamConverter::class);
+        }
     }
 }
