@@ -16,8 +16,15 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('emhar_api_infrastructure')
+        $treeBuilder = new TreeBuilder('emhar_api_infrastructure');
+
+        if (method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            // BC layer for symfony/config 4.1 and older
+            $rootNode = $treeBuilder->root('emhar_api_infrastructure');
+        }
+        $rootNode
             ->children()
             ->scalarNode('warm_nelmio_doc')->defaultFalse()->end()
             ->scalarNode('warm_nelmio_doc_with_jms_job')->defaultFalse()->end()
