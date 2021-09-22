@@ -19,12 +19,16 @@ class OverrideNelmioParser implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('nelmio_api_doc.parser.validation_parser');
-        $definition->setClass(TableizedNameValidationParser::class);
-        $definition->addMethodCall('setJmsParser', array(new Reference('nelmio_api_doc.parser.jms_metadata_parser')));
+        if($container->hasDefinition('nelmio_api_doc.parser.validation_parser')) {
+            $definition = $container->getDefinition('nelmio_api_doc.parser.validation_parser');
+            $definition->setClass(TableizedNameValidationParser::class);
+            $definition->addMethodCall('setJmsParser', array(new Reference('nelmio_api_doc.parser.jms_metadata_parser')));
+        }
 
-        $definition = $container->getDefinition('nelmio_api_doc.parser.jms_metadata_parser');
-        $definition->setClass(InheritanceAwareJmsMetadataParser::class);
-        $definition->addMethodCall('setDoctrineRegistry', array(new Reference('doctrine')));
+        if($container->hasDefinition('nelmio_api_doc.parser.jms_metadata_parser')) {
+            $definition = $container->getDefinition('nelmio_api_doc.parser.jms_metadata_parser');
+            $definition->setClass(InheritanceAwareJmsMetadataParser::class);
+            $definition->addMethodCall('setDoctrineRegistry', array(new Reference('doctrine')));
+        }
     }
 }
